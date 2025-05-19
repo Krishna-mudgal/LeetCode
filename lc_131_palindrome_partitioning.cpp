@@ -3,7 +3,7 @@ using namespace std;
 
 // https://leetcode.com/problems/palindrome-partitioning/description/
 
-class Solution {
+class Solution { // T.c. = O(n * 2^n)
 public:
     
     bool check(string y){
