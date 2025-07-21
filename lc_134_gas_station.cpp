@@ -57,3 +57,46 @@ public:
 
     }
 };
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+
+        int cgas = 0;
+        int i = 0;
+        bool haveStarted = false;
+        int start = 0;
+        int ans = -1;
+        int cnt = 0;
+        while(i < n){
+            if(i == start && haveStarted) {
+                ans = start;
+                break;
+            }
+            else if(i == start) haveStarted = true;
+
+            if(cnt > 2*n) return -1;
+
+            cgas += gas[i];
+            if(cost[i] > cgas) {
+                i++;
+                i %= n;
+                start = i;
+                haveStarted = false;
+                cgas = 0;
+                // cnt = 0;
+            }
+            else {
+                cgas -= cost[i];
+                i++;
+                i %= n;
+            }
+            cnt++;
+
+        }
+
+        return ans;
+
+    }
+};
