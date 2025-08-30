@@ -38,3 +38,43 @@ public:
         return false;
     }
 };
+
+class Solution {
+public:
+    bool check(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1) return true;
+        int pivot = -1;
+        for(int i = 0; i < n; i++){
+            if(i == 0 && nums[i] > nums[i + 1]) pivot = i;
+            else if(i == n - 1 && nums[i] < nums[i - 1]) pivot = i;
+            else if(i > 0 && i < n - 1 && nums[i - 1] <= nums[i] && nums[i] > nums[i + 1]) pivot = i;
+
+            if(pivot != -1) break;
+        }
+
+
+        if(pivot == -1) {
+            for(int i = 1; i < n; i++) {
+                if(nums[i] < nums[i - 1]) return false;
+            }
+
+            return true;
+        } 
+
+        if(nums[0] < nums[n - 1]) return false;
+        int i = 0;
+        while(i < pivot) {
+            if(nums[i] > nums[i + 1]) return false;
+            i++;
+        }
+
+        i = pivot + 1;
+        while(i < n - 1) {
+            if(nums[i] > nums[i + 1]) return false;
+            i++;
+        }
+
+        return true;
+    }
+};
