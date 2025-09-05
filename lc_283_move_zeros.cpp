@@ -33,3 +33,26 @@ public:
         }
     }
 };
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int n = nums.size();
+
+        int i = 0;
+        while(i < n - 1) {
+            if(nums[i] == 0) {
+
+                // i ke ange jb tk 0 a rha h tb tk skip
+                // if not zero then swap it with nums[i]
+                int j = i + 1;
+                while(j < n && nums[j] == 0) j++; 
+
+                if(j == n) break;
+                swap(nums[i], nums[j]);
+            }
+
+            i++;
+        }
+    }
+};

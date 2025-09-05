@@ -57,3 +57,33 @@ public:
         return true;
     }
 }; 
+
+
+class Solution { // another approach
+public:
+    bool isSubsequence(string s, string t) {
+        int n = t.size();
+        unordered_map<char, queue<int> > mp;
+        for(int i = 0; i < n; i++) {
+            mp[t[i]].push(i);
+        }
+
+        int m = s.size();
+        vector<int> v(m, -1);
+        for(int i = 0; i < m; i++) {
+            if(mp.find(s[i]) == mp.end()) return false;
+
+            if(i > 0) {
+                while(!mp[s[i]].empty() && mp[s[i]].front() < v[i - 1]) mp[s[i]].pop();
+
+                if(mp[s[i]].empty()) return false;
+            }
+            v[i] = mp[s[i]].front();
+
+            mp[s[i]].pop();
+            if(mp[s[i]].size() == 0) mp.erase(s[i]);
+        }
+
+        return true;
+    }
+};

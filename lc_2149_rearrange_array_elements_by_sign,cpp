@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+// https://leetcode.com/problems/rearrange-array-elements-by-sign/description/
+
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> posi, neg;
+        for(auto &i : nums) (i < 0) ? neg.push_back(i) : posi.push_back(i);
+
+        int i = 0, j = 0, k = 0;
+        while(k < n) {
+            if(k == 0) nums[k++] = posi[i++];
+            else if(nums[k - 1] > 0) nums[k++] = neg[j++];
+            else nums[k++] = posi[i++];
+        }
+
+        return nums;
+    }
+};
+
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n);
+
+        /*
+
+            isme loop lgao bs agr positive a rha h to usko uski jgh pr place krdo new array m or agr negative a rha h to usko bhi uski jgh place krdo
+            posi 0 se start hoga or posi-neg alterante ane chiye to ab next posi ko 2 se increase krdena to unke bich m negative a jyga similar for negative also bs usko 1 se start krna
+
+        */
+
+        int posi = 0, neg = 1;
+        for(int i = 0; i < n; i++) {
+            if(nums[i] < 0) {
+                ans[neg] = nums[i];
+                neg += 2;
+            } else {
+                ans[posi] = nums[i];
+                posi += 2;
+            }
+        }
+
+        return ans;
+    }
+};
