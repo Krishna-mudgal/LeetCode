@@ -26,3 +26,41 @@ public:
         return false;
     }
 };
+
+
+class Solution { // another method
+public:
+    bool hasIncreasingSubarrays(vector<int>& nums, int k) {
+        int n = nums.size();
+
+        if(k == 1) return true;
+
+        int i = 0;
+        while(i < n) {
+            if(i + 1 < n && nums[i] < nums[i + 1]) {
+                int j = i;
+                int cnt = 1;
+                while(j + 1 < n && nums[j] < nums[j + 1] && j + 1 < i + k) {
+                    cnt++;
+                    j++;
+                }
+                if(cnt < k) {
+                    i++;
+                    continue;
+                }
+
+                j++;
+                cnt = 1;
+                while(j + 1 < n && nums[j] < nums[j + 1] && j + 1 < i + 2*k) {
+                    cnt++;
+                    j++;
+                }
+
+                if(cnt == k) return true;
+                else i++;
+            } else i++;
+        }
+
+        return false;
+    }
+};
