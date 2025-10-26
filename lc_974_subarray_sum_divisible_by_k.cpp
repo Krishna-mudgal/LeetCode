@@ -1,26 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// https://leetcode.com/problems/subarray-sums-divisible-by-k/description/
-
 class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
-        int n = nums.size();
+        int n = nums.size(); 
 
-        for(int i = 1; i < n; i++) nums[i] += nums[i - 1];
+        /*
+        1. To solve this question you must know the fact that if subarray is a,b,c,d,e,f  and sum of a to e is s1 and sum of a to c is s2 and s1 % k = x and s2 % k = x, then subarray s1-s2 is always divisble by k 
+        proof : 
+        s1 = k*n1 + x and s2 = k*n2 + x
+        s1 - s2 = k*(n1 - n2);
+        hence it can be clearly seen that s1 - s2 is divisible by k
+        */
 
-        unordered_map<int, int> m;
-        m[0] = 1;
-        int ans = 0;
+        int pSum = 0, ans = 0;
+        unordered_map<int, int> mp;
+        mp[0]++;
         for(int i = 0; i < n; i++){
-            int rem = ((nums[i] % k) + k) % k; // to handle cases where nums[i] can be negative also
+            pSum += nums[i];
+            int rem = pSum % k;
+            if(rem < 0) rem += k;
+            
+            if(mp.find(rem) != mp.end()) ans += mp[rem];
 
-            if(m.find(rem) != m.end()){
-                ans += m[rem];
-            }
-
-            m[rem]++;
+            mp[rem]++;
         }
 
         return ans;
