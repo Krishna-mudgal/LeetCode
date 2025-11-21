@@ -3,7 +3,40 @@ using namespace std;
 
 // https://leetcode.com/problems/jump-game-ii/description/
 
-class Solution { // top-down
+class Solution {
+public:
+    int jump(vector<int>& nums) { // bfs
+
+        int n = nums.size();
+        int ans = 0;
+        queue<int> q;
+        vector<bool> visited(n, false);
+        q.push(0);
+        visited[0] = true;
+
+        while(!q.empty()) {
+            int m = q.size();
+            for(int i = 0; i < m; i++) {
+                auto t = q.front();
+                q.pop();
+
+                if(t == n - 1) return ans;
+
+                for(int j = 1; j <= nums[t]; j++) {
+                    if(t + j < n && !visited[t + j]) {
+                        q.push(t + j);
+                        visited[t + j] = true;
+                    }
+                }
+            }
+            ans++;
+        }
+
+        return ans;
+    }
+};
+
+class Solution { // dfs with dp
 public:
 
     vector<long long> dp;
