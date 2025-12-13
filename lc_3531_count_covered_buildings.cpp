@@ -6,37 +6,33 @@ using namespace std;
 class Solution {
 public:
     int countCoveredBuildings(int n, vector<vector<int>>& buildings) {
-        unordered_map<int, int> mp1, mp2, mp3, mp4;
+        unordered_map<int, pair<int, int>> mp1, mp2;
         sort(buildings.begin(), buildings.end());
 
         for(int i = 0; i < buildings.size(); i++) {
-            if(mp1.find(buildings[i][0]) != mp1.end()) mp1[buildings[i][0]] = max(mp1[buildings[i][0]], buildings[i][1]);
-            else mp1[buildings[i][0]] = buildings[i][1];
+            if(mp1.find(buildings[i][0]) != mp1.end()) {
+                mp1[buildings[i][0]].second = max(mp1[buildings[i][0]].second, buildings[i][1]);
+                mp1[buildings[i][0]].first = min(mp1[buildings[i][0]].first, buildings[i][1]);
+            }
+            else {
+                mp1[buildings[i][0]].first = buildings[i][1];
+                mp1[buildings[i][0]].second = buildings[i][1];
+            }
 
-            if(mp2.find(buildings[i][1]) != mp2.end()) mp2[buildings[i][1]] = max(mp2[buildings[i][1]], buildings[i][0]);
-            else mp2[buildings[i][1]] = buildings[i][0];
-
-            if(mp3.find(buildings[i][0]) != mp3.end()) mp3[buildings[i][0]] = min(mp3[buildings[i][0]], buildings[i][1]);
-            else mp3[buildings[i][0]] = buildings[i][1];
-
-            if(mp4.find(buildings[i][1]) != mp4.end()) mp4[buildings[i][1]] = min(mp4[buildings[i][1]], buildings[i][0]);
-            else mp4[buildings[i][1]] = buildings[i][0];
+            if(mp2.find(buildings[i][1]) != mp2.end()) {
+                mp2[buildings[i][1]].second = max(mp2[buildings[i][1]].second, buildings[i][0]);
+                mp2[buildings[i][1]].first = min(mp2[buildings[i][1]].first, buildings[i][0]);
+            }
+            else {
+                mp2[buildings[i][1]].second = buildings[i][0];
+                mp2[buildings[i][1]].first = buildings[i][0];
+            }
         }
 
         int ans = 0;
-        bool flag = true;
         for(auto &p : buildings) {
-            flag = true;
             int x = p[0], y = p[1];
-            if(mp1[x] != mp3[x]) {
-                if(y < mp1[x] && y > mp3[x]) flag = false;
-            }
-
-            if(flag) continue;
-
-            if(mp2[y] != mp4[y]) {
-                if(x < mp2[y] && x > mp4[y]) ans++;
-            }
+            if(y < mp1[x].second && y > mp1[x].first && x < mp2[y].second && x > mp2[y].first) ans++;
         }
 
         return ans;
